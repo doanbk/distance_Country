@@ -39,6 +39,7 @@ def getvector(namemethod):
     else:
         pass
 
+    # words_np = np.array(words_np).reshape(1, -1)
     pca = PCA(n_components=2)
     pca.fit(words_np)
     reduced = pca.transform(words_np)

@@ -48,13 +48,13 @@
 
   <div class="container-fluid">
     <div class="row content">
-      <div class="col-sm-3 sidenav">
+      <div class="col-sm-2 sidenav">
         <h3>Khoảng cách hai đất nước</h3>
         <div class="form-group">
           <label for="methodw2v">Chọn phương pháp word embedding:</label>
           <select class="form-control" id="methodw2v" name="methodw2v">
-            <option value=Spacy>Spacy</option>
             <option value=word2vec_gensim>word2vec_gensim</option>
+            <option value=Spacy>Spacy</option>
             <option value=word2vec>word2vec</option>
             <option value=gloVe>gloVe</option>
             <option value=fastText>fastText</option>
@@ -91,16 +91,27 @@
   </footer>
 
 </body>
+
 <script>
-  $("#submit").click(function () {
+  $(document).ready(function(){
+    // set value method word embbeding
+    var pathname = window.location.pathname;
+    var methodw2v = pathname.split('/')[2];
+    if(methodw2v){
+      $("methodw2v, select").val(methodw2v);
+    }else{
+      $("methodw2v, select").val("word2vec_gensim");
+    }
+
+    // event submit return distane of countries
+    $("#submit").click(function () {
     country1 = $("#country1").val();
     country2 = $("#country2").val();
-    console.log(country1);
-    console.log(country2);
-
+    methodw2v = $("#methodw2v").val();
     object = {};
     object["country1"] = country1;
     object["country2"] = country2;
+    object["methodw2v"] = methodw2v;
     json = JSON.stringify(object)
     $.post("/query",
       json,
@@ -108,6 +119,11 @@
         $("#result").text(data);
       });
   });
+  $('#methodw2v').change(function() {
+    var val = $("#methodw2v option:selected").text();
+    window.location.replace('http://127.0.0.1:5000/method/'+val);
+  });
+  })
 </script>
 
 </html>

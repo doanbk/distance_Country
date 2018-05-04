@@ -4,6 +4,7 @@ import plotly.graph_objs as go
 from plotly.offline import plot
 import spacy
 from spacy.tokens import Doc
+import numpy as np
 
 pathcountry = '../model/country'
 with open(pathcountry, 'r') as f:
@@ -38,6 +39,7 @@ def visualize(namemethod='word2vec_gensim'):
         pass
         # print "No"
 
+    # words_np = np.array(words_np).reshape(1, -1)
     pca = PCA(n_components=2)
     pca.fit(words_np)
     reduced = pca.transform(words_np)
